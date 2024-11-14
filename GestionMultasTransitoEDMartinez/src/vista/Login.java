@@ -186,7 +186,7 @@ ConectarBD con =  new ConectarBD();
                  JOptionPane.showMessageDialog(null, "Bienvenido a la base de datos");
                  
              } catch ( SQLException ex) {
-                 JOptionPane.showMessageDialog(null, "No se Pudo Registrar Accder   a la Base de datos");
+                 JOptionPane.showMessageDialog(null, "No se Pudo  Accder  a la Base de datos");
              }
              
          }else{
