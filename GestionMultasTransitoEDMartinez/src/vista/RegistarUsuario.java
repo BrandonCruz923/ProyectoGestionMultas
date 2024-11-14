@@ -168,17 +168,17 @@ public class RegistarUsuario extends javax.swing.JFrame {
         String userName  = txtUserName.getText();
         String password = txtPassword.getText();
         String tipoUsuario = comboTipo.getSelectedItem().toString();
-        ingresaUsuario = new Usuario(WIDTH, nombre, tipoUsuario, userName, password);
-        listaUsuarios.add(ingresaUsuario);
-        JOptionPane.showMessageDialog(null, "Ingreso Correctamente El Usuario\n");
         
-        if (nombre.isEmpty() || userName.isEmpty() || password.isEmpty() ){
+         if (nombre.isEmpty() || userName.isEmpty() || password.isEmpty() ){
             JOptionPane.showMessageDialog(null, "Hay Campos Vacios Y No Se Puede Registar Su Usuario");
         }else{
             if (tipoUsuario.equalsIgnoreCase("Seleccionar")){
                 JOptionPane.showMessageDialog(null, "Debe Selecionar Un Tipo De Usuario");
             }
         }
+        ingresaUsuario = new Usuario(WIDTH, nombre, tipoUsuario, userName, password);
+        listaUsuarios.add(ingresaUsuario);
+        JOptionPane.showMessageDialog(null, "Ingreso Correctamente El Usuario\n");
          
         ingresaUsuario = new Usuario(WIDTH, nombre, tipoUsuario, userName, password);
         listaUsuarios.add(ingresaUsuario);
