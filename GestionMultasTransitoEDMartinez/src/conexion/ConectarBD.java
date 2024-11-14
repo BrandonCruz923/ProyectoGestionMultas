@@ -13,8 +13,8 @@ import javax.swing.JOptionPane;
  */
 public class ConectarBD {
     public Connection cn;
-public Statement stmt;
-public ResultSet rs;
+    public Statement stmt;
+    public ResultSet rs;
     
 //metodo para conectar a la base de datos 
 

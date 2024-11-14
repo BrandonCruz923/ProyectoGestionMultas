@@ -1,19 +1,21 @@
 
 package vista;
 
+
+
 /**
  *
  * @author capri
  */
 public class PanelPrincipal extends javax.swing.JFrame {
 
-    /**
-     * Creates new form PanelPrincipal
-     */
+    
+    
     public PanelPrincipal() {
         initComponents();
         this.setLocationRelativeTo(null);//Centrar la interface 
         this.setTitle("Sistemas De Multas  Martinez");
+        
         
     }
 
@@ -123,7 +125,11 @@ public class PanelPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarAdministradorActionPerformed
-        // TODO add your handling code here:
+       
+        Login abriVentanaLogin = new Login();
+         abriVentanaLogin.setVisible(true);
+        this.hide();//Oculta Ventana Anterior
+               
     }//GEN-LAST:event_btnIngresarAdministradorActionPerformed
 
     private void btnIngresarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarUsuarioActionPerformed

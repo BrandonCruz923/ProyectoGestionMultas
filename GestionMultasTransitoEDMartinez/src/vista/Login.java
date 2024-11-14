@@ -1,15 +1,17 @@
 
 package vista;
-
+import conexion.ConectarBD;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import poo.Usuario;
 /**
  *
  * @author capri
  */
 public class Login extends javax.swing.JFrame {
+ConectarBD con =  new ConectarBD();
+   
 
-    /**
-     * Creates new form Login
-     */
     public static RegistarUsuario fr;
     public Login() {
         initComponents();
@@ -66,6 +68,11 @@ public class Login extends javax.swing.JFrame {
         btnAcceder.setForeground(new java.awt.Color(0, 0, 0));
         btnAcceder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Ingresar (1).png"))); // NOI18N
         btnAcceder.setText("Acceder al Sistema");
+        btnAcceder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAccederActionPerformed(evt);
+            }
+        });
 
         btnRegistrar.setBackground(new java.awt.Color(51, 255, 51));
         btnRegistrar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -165,6 +172,28 @@ public class Login extends javax.swing.JFrame {
         fr = new RegistarUsuario();
         fr.setVisible(true);
     }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void btnAccederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederActionPerformed
+         String userName = txtUserName.getText();
+         String password = txtPassword.getText();
+         
+         if (!userName.equals("") || !password.equals("") ){
+             try {
+                 con.conectarBDOracle();
+                  
+                 String consultaSQl ="SELECT TIPOUSUARIO FROM usuarios WHERE username = ' "+userName+ " ' AND password = ' " +password+ "  ' ";
+                 con.stmt.executeQuery(consultaSQl);
+                 JOptionPane.showMessageDialog(null, "Bienvenido a la base de datos");
+                 
+             } catch ( SQLException ex) {
+                 JOptionPane.showMessageDialog(null, "No se Pudo Registrar Accder   a la Base de datos");
+             }
+             
+         }else{
+             JOptionPane.showMessageDialog(null, "Se Deben Llenar Las Casillas");
+         }
+         
+    }//GEN-LAST:event_btnAccederActionPerformed
 
     /**
      * @param args the command line arguments
