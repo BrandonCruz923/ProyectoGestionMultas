@@ -3,6 +3,10 @@ package vista;
 import conexion.ConectarBD;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import java.sql.PreparedStatement;
+import javax.swing.text.PasswordView;
+
+
 import poo.Usuario;
 /**
  *
@@ -175,23 +179,27 @@ ConectarBD con =  new ConectarBD();
 
     private void btnAccederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederActionPerformed
          String userName = txtUserName.getText();
-         String password = txtPassword.getText();
-         
-         if (!userName.equals("") || !password.equals("") ){
+         String password = new String(txtPassword.getPassword()).trim();
+        
+         if(userName.isEmpty() || password.isEmpty()){
+             JOptionPane.showMessageDialog(null, "No Puede Haber Espacios Vacios En Las Areas De Usuario Y Constraseña");
+         }
+         else {
+             String consultaSQl ="SELECT TIPOUSUARIO FROM usuarios WHERE username = ' "+userName+ " ' AND password = ' " +password+ "  ' ";
              try {
                  con.conectarBDOracle();
-                  
-                 String consultaSQl ="SELECT TIPOUSUARIO FROM usuarios WHERE username = ' "+userName+ " ' AND password = ' " +password+ "  ' ";
-                 con.stmt.executeQuery(consultaSQl);
-                 JOptionPane.showMessageDialog(null, "Bienvenido a la base de datos");
-                 
-             } catch ( SQLException ex) {
-                 JOptionPane.showMessageDialog(null, "No se Pudo  Accder  a la Base de datos");
+                 PreparedStatement stmt = con.cn.prepareStatement(consultaSQl);
+                 stmt.setString(1, userName);
+                 stmt.setString(2, password);
+                 con.rs = stmt.executeQuery();
+             } catch (SQLException ex) {
              }
-             
-         }else{
-             JOptionPane.showMessageDialog(null, "Se Deben Llenar Las Casillas");
          }
+         
+         
+         
+       
+               
          
     }//GEN-LAST:event_btnAccederActionPerformed
 
