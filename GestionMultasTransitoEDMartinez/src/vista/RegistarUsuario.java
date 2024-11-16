@@ -78,6 +78,11 @@ public class RegistarUsuario extends javax.swing.JFrame {
         comboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar", "Administrador", "Agente_Transito", " " }));
         comboTipo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tipo De Usuarios", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(0, 0, 0))); // NOI18N
         comboTipo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        comboTipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboTipoActionPerformed(evt);
+            }
+        });
 
         btnRegistarUsuario.setBackground(new java.awt.Color(51, 255, 51));
         btnRegistarUsuario.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -187,10 +192,7 @@ public class RegistarUsuario extends javax.swing.JFrame {
         listaUsuarios.add(ingresaUsuario);
         JOptionPane.showMessageDialog(null, "Ingreso Correctamente El Usuario\n");
          
-        ingresaUsuario = new Usuario(WIDTH, nombre, tipoUsuario, userName, password);
-        listaUsuarios.add(ingresaUsuario);
-        
-        try {
+     try {
             con.conectarBDOracle();
           String altaUsuario = "INSERT INTO Usuarios (idUsuario, nombre, tipoUsuario, username, password) " +
                      "VALUES (seq_idUsuario.NEXTVAL, '" + ingresaUsuario.getNombre() + "', '" + 
@@ -202,12 +204,16 @@ public class RegistarUsuario extends javax.swing.JFrame {
             
            }  
         catch ( SQLException ex) {
-            JOptionPane.showMessageDialog(null, "No se Pudo Registrar El Usuario   a la Base de datos");
+            JOptionPane.showMessageDialog(null, "No se Pudo Registrar El Usuario   a la Base de datos"+ex.getMessage());
                  }
              }
          }
         
     }//GEN-LAST:event_btnRegistarUsuarioActionPerformed
+
+    private void comboTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboTipoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboTipoActionPerformed
     
     public void limpiarCasillas(){
         this.txtNombre.setText("");

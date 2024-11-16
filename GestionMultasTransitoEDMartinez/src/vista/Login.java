@@ -180,27 +180,35 @@ ConectarBD con =  new ConectarBD();
     private void btnAccederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederActionPerformed
          String userName = txtUserName.getText();
          String password = new String(txtPassword.getPassword()).trim();
-        
-         if(userName.isEmpty() || password.isEmpty()){
-             JOptionPane.showMessageDialog(null, "No Puede Haber Espacios Vacios En Las Areas De Usuario Y Constraseña");
-         }
-         else {
-             String consultaSQl ="SELECT TIPOUSUARIO FROM usuarios WHERE username = ' "+userName+ " ' AND password = ' " +password+ "  ' ";
-             try {
-                 con.conectarBDOracle();
-                 PreparedStatement stmt = con.cn.prepareStatement(consultaSQl);
-                 stmt.setString(1, userName);
-                 stmt.setString(2, password);
-                 con.rs = stmt.executeQuery();
-             } catch (SQLException ex) {
+         
+         if (!userName.equals("") || !password.equals("")){
+            String consultaSQL = "SELECT TIPOUSUARIO FROM usuarios WHERE username = ? AND password = ?";
+         try {
+         con.conectarBDOracle();
+         PreparedStatement stmt = con.cn.prepareStatement(consultaSQL);
+         stmt.setString(1, userName.trim());
+         stmt.setString(2, password);
+         con.rs = stmt.executeQuery();
+         if (con.rs.next()) {
+        String tipoNivel = con.rs.getString("TIPOUSUARIO");
+        if (tipoNivel.equalsIgnoreCase("Administrador")) {
+            dispose();
+            Administrador ad = new Administrador();
+            ad.setVisible(true);
+        } else if (tipoNivel.equalsIgnoreCase("Agente_Transito")) {
+            dispose();
+            AgenteTransito at = new AgenteTransito();
+            at.setVisible(true);
+        }
+                     } else {
+                  JOptionPane.showMessageDialog(null, "Los Datos Introducidos son Incorrectos");
+               }
+          } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "No se Pudo Acceder A La Base de datos: " + ex.getMessage());
              }
+         }else {
+             JOptionPane.showMessageDialog(null, "Debes Llenas las Casillas de Pasword o usuario");
          }
-         
-         
-         
-       
-               
-         
     }//GEN-LAST:event_btnAccederActionPerformed
 
     /**

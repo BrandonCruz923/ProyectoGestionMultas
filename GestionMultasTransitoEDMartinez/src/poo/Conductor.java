@@ -8,17 +8,19 @@ public class Conductor {
     private int idConductor;
     private String nombre;
     private String numLicencia;
-    private int celular;
+    private String correo;
+    private Long celular;
     
     public Conductor(){
         
     }
 
-    public Conductor(int idConductor, String nombre, String numLicencia, int celular) {
+    public Conductor(int idConductor, String nombre, String numLicencia, Long celular,String correo) {
         this.idConductor = idConductor;
         this.nombre = nombre;
         this.numLicencia = numLicencia;
         this.celular = celular;
+        this.correo = correo;
     }
 
     public int getIdConductor() {
@@ -45,12 +47,22 @@ public class Conductor {
         this.numLicencia = numLicencia;
     }
 
-    public int getCelular() {
+    public Long getCelular() {
         return celular;
     }
 
-    public void setCelular(int celular) {
+    public void setCelular(Long celular) {
         this.celular = celular;
+    }
+
+  
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
     
     
