@@ -111,6 +111,11 @@ public class ModificarConductor extends javax.swing.JFrame {
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -254,18 +259,24 @@ public class ModificarConductor extends javax.swing.JFrame {
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         String nombreEditar = txtNombre.getText();
         String noLicenciaEditar = txtNumeroLicencia.getText();
-        long celEditar = Long.parseLong(txtTelefono.getText());
+        //long celEditar = Long.parseLong(txtTelefono.getText());
+        String celTexto = txtTelefono.getText();
         String correoEdiatr = txtCorreo.getText();
-       int  idConductor = Integer.parseInt(txtIdConductor.getText());
-       if(nombreEditar.isEmpty() || noLicenciaEditar.isEmpty() || correoEdiatr.isEmpty() || txtTelefono.getText().isEmpty() || txtIdConductor.getText().isEmpty()){
+       //int  idConductor = Integer.parseInt(txtIdConductor.getText());
+       String idTexto = txtIdConductor.getText();
+        if(nombreEditar.isEmpty() || noLicenciaEditar.isEmpty() || correoEdiatr.isEmpty() || celTexto.isEmpty() || idTexto.isEmpty()){
            JOptionPane.showMessageDialog(null, "Deber Primero Buscar El Usuario Para Poder Editar");
        }
        else{
+         long celEditar = Long.parseLong(celTexto);
+         int idConductor = Integer.parseInt(idTexto);
         try {
             con.conectarBDOracle();
             String editarSQL =  "UPDATE conductor SET nombre = '"+nombreEditar+"',correo = '"+correoEdiatr+"', telefono = '"+celEditar+"',no_licencia = ' "+noLicenciaEditar +"'  WHERE id_conductor = '"+idConductor+"'";
             con.stmt.executeUpdate(editarSQL);
             JOptionPane.showMessageDialog(null, "Conductor Editado Con Exito\n Verifica La Consulta ");
+            limpiarCasillas();
+            
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error Al Editar El Conductor"+ex);
         }
@@ -273,6 +284,37 @@ public class ModificarConductor extends javax.swing.JFrame {
        
     }//GEN-LAST:event_btnEditarActionPerformed
 
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        String idTexto = txtIdConductor.getText();
+        int confirmarBaja;
+        if (idTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Primero Debes Buscar Al Usuario Para Eliminarlo");
+        } else {
+            int idConductor = Integer.parseInt(idTexto);
+            try {
+                con.conectarBDOracle();
+                confirmarBaja = con.stmt.executeUpdate("DELETE FROM conductor WHERE  id_conductor = ' "+idConductor+" ' ");
+                if (confirmarBaja == 1) {
+                     JOptionPane.showMessageDialog(null, "Se Elimino Conductor De La Base De Datos \n"+confirmarBaja);
+                     limpiarCasillas();
+                } else {
+                     JOptionPane.showMessageDialog(null, "No Se Encontro El Id del conductor");
+                }
+                
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error Al Eliminar El Conductor De La Base De Datos"+ex);
+                
+                }
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+  
+     public void limpiarCasillas(){
+         this.txtNombre.setText(null);
+         this.txtNumeroLicencia.setText(null);
+         this.txtTelefono.setText(null);
+         this.txtCorreo.setText(null);
+         this.txtIdConductor.setText(null);
+    }
     /**
      * @param args the command line arguments
      */
@@ -312,8 +354,6 @@ public class ModificarConductor extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnRegistarConductor;
-    private javax.swing.JButton btnRegistarConductor1;
     private javax.swing.JButton btnVolver;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;

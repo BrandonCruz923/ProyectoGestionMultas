@@ -82,6 +82,11 @@ public class Administrador extends javax.swing.JFrame {
         });
 
         btnEditar_Eliminar.setText("Editar o Eliminar Conductor");
+        btnEditar_Eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditar_EliminarActionPerformed(evt);
+            }
+        });
 
         btnEditar_Eliminar_Vehiculo.setText("Editar o Eliminar Vehiculo");
         btnEditar_Eliminar_Vehiculo.addActionListener(new java.awt.event.ActionListener() {
@@ -191,6 +196,12 @@ public class Administrador extends javax.swing.JFrame {
     private void btnEditar_Eliminar_VehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditar_Eliminar_VehiculoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEditar_Eliminar_VehiculoActionPerformed
+
+    private void btnEditar_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditar_EliminarActionPerformed
+        ModificarConductor conductot = new ModificarConductor();
+        conductot.setVisible(true);
+        this.hide();
+    }//GEN-LAST:event_btnEditar_EliminarActionPerformed
 
     /**
      * @param args the command line arguments

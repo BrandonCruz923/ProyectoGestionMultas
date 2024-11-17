@@ -201,6 +201,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Editar o Eliminar Conductor"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditar_EliminarActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnEditar_Eliminar_Vehiculo">
           <Properties>

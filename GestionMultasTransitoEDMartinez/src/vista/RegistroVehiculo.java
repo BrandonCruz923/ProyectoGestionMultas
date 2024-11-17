@@ -231,7 +231,7 @@ public class RegistroVehiculo extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -276,7 +276,7 @@ public class RegistroVehiculo extends javax.swing.JFrame {
         if (placa.isEmpty() || marca.isEmpty() || modelo.isEmpty() || anio == ' ' || id_Conductor == ' ' ) {
             JOptionPane.showMessageDialog(null, "No se Puede Dejar Las Casillas Vacias");
           } else {
-            ingresaVehiculo = new Vehiculo(WIDTH, marca, marca, modelo, anio, id_Conductor);
+            ingresaVehiculo = new Vehiculo(WIDTH,placa , marca, modelo, anio, id_Conductor);
             listaVehiculo.add(ingresaVehiculo);
             JOptionPane.showMessageDialog(null, "Se Ha Agregado Correctamente El Vehiculo");
             try {
