@@ -1,18 +1,25 @@
 
 package vista;
+import poo.Multa;
+import conexion.ConectarBD;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author capri
  */
 public class Administrador extends javax.swing.JFrame {
-
+   ConectarBD con = new ConectarBD();
     /**
      * Creates new form Administrador
      */
     public Administrador() {
         initComponents();
            setLocationRelativeTo(null);//Centra la ventana
+           consultarDatos();
     }
 
    
@@ -20,13 +27,13 @@ public class Administrador extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jSpinner1 = new javax.swing.JSpinner();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        btnConsulta = new javax.swing.JButton();
         btnVolver = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        JTableMultas = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         btnRegistarConductor = new javax.swing.JButton();
         btnRegistarVehiculo = new javax.swing.JButton();
@@ -41,9 +48,12 @@ public class Administrador extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Sistema Administrador ");
 
-        btnConsulta.setText("Consultar Multas");
-
         btnVolver.setText("Volver a menu ");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
 
         btnSalir.setText("Salir ");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -52,18 +62,18 @@ public class Administrador extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        JTableMultas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Matricula", "Descripcion", "Costo"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(JTableMultas);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/placa-de-policia (2).png"))); // NOI18N
 
@@ -105,9 +115,6 @@ public class Administrador extends javax.swing.JFrame {
                         .addGap(172, 172, 172)
                         .addComponent(jLabel2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(76, 76, 76)
-                        .addComponent(btnConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -131,22 +138,21 @@ public class Administrador extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(btnConsulta)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jLabel1)
-                .addGap(36, 36, 36)
-                .addComponent(btnRegistarConductor)
-                .addGap(31, 31, 31)
-                .addComponent(btnRegistarVehiculo)
-                .addGap(31, 31, 31)
-                .addComponent(btnEditar_Eliminar)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jLabel1)
+                        .addGap(36, 36, 36)
+                        .addComponent(btnRegistarConductor)
+                        .addGap(31, 31, 31)
+                        .addComponent(btnRegistarVehiculo)
+                        .addGap(31, 31, 31)
+                        .addComponent(btnEditar_Eliminar))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(jLabel2)
+                        .addGap(40, 40, 40)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -177,7 +183,7 @@ public class Administrador extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-      
+      System.exit(1);
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnRegistarConductorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistarConductorActionPerformed
@@ -205,6 +211,39 @@ public class Administrador extends javax.swing.JFrame {
         this.hide();
     }//GEN-LAST:event_btnEditar_EliminarActionPerformed
 
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        PanelPrincipal pane = new PanelPrincipal();
+        pane.setVisible(true);
+        this.hide();
+    }//GEN-LAST:event_btnVolverActionPerformed
+ public void consultarDatos(){
+      try {
+            con.conectarBDOracle();
+            DefaultTableModel modeloMulta = new DefaultTableModel();
+            this.JTableMultas.setModel(modeloMulta);
+            con.rs = con.stmt.executeQuery("SELECT v.PLACA, m.Motivo, m.Monto_Total FROM MULTA m JOIN Vehiculo v ON m.ID_Vehiculo = v.id_vehiculo");
+            ResultSetMetaData rsmd = con.rs.getMetaData();
+            int cantidadColumnas = rsmd.getColumnCount();
+            modeloMulta.addColumn("PLACA");
+            modeloMulta.addColumn("Motivo");
+            modeloMulta.addColumn("Monto");
+            while(con.rs.next()){
+                  Object []fila = new Object[cantidadColumnas];
+                  for (int i = 0; i < cantidadColumnas; i++) {//Inicia For
+                      fila[i] = con.rs.getObject(i+1);
+                  }//Termina for
+                  
+                  modeloMulta.addRow(fila);
+              }
+            
+            
+        } catch (SQLException ex) {
+             JOptionPane.showMessageDialog(null, "Error 2. de BD Consulta\n"+ex);
+        }
+       
+     
+     
+ }
     /**
      * @param args the command line arguments
      */
@@ -241,7 +280,7 @@ public class Administrador extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnConsulta;
+    private javax.swing.JTable JTableMultas;
     private javax.swing.JButton btnEditar_Eliminar;
     private javax.swing.JButton btnEditar_Eliminar_Vehiculo;
     private javax.swing.JButton btnRegistarConductor;
@@ -252,6 +291,6 @@ public class Administrador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JSpinner jSpinner1;
     // End of variables declaration//GEN-END:variables
 }

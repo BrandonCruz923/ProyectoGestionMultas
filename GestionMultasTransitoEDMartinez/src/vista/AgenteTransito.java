@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
+import java.sql.ResultSetMetaData;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author capri
@@ -20,7 +22,7 @@ public class AgenteTransito extends javax.swing.JFrame {
      Date fechaActual = new Date();
      String fechaTexto = formatoFecha.format(fechaActual); 
      // Establecer la fecha en el JTextField 
-      
+      int fila;
 
 
    private int idUsuario;
@@ -33,6 +35,7 @@ public class AgenteTransito extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         txtFecha.setText(fechaTexto);
         txtFecha.setEditable(false);
+        consultaDatos();
         
     }
     
@@ -60,6 +63,10 @@ public class AgenteTransito extends javax.swing.JFrame {
         btnAyuda = new javax.swing.JButton();
         btnAgregarMulta = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        JtMultas = new javax.swing.JTable();
+        btnModificar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,78 +124,139 @@ public class AgenteTransito extends javax.swing.JFrame {
             }
         });
 
+        JtMultas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Fecha", "Placa", "Descripcion", "Monto"
+            }
+        ));
+        JtMultas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JtMultasMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(JtMultas);
+
+        btnModificar.setBackground(new java.awt.Color(102, 255, 102));
+        btnModificar.setForeground(new java.awt.Color(0, 0, 0));
+        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
+        btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
+
+        btnEliminar.setBackground(new java.awt.Color(102, 255, 102));
+        btnEliminar.setForeground(new java.awt.Color(0, 0, 0));
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(59, 59, 59)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblFecha)
-                    .addComponent(lblIngresarPlaca)
-                    .addComponent(lblDescripcion)
-                    .addComponent(lblMonto)
-                    .addComponent(txtFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
-                    .addComponent(txtPlaca)
-                    .addComponent(txtDescripcion)
-                    .addComponent(txtMontoTotal))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(92, 92, 92)
-                        .addComponent(jLabel1)
-                        .addContainerGap(76, Short.MAX_VALUE))
+                        .addGap(118, 118, 118)
+                        .addComponent(lblTitulo))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(59, 59, 59)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblFecha)
+                            .addComponent(lblIngresarPlaca)
+                            .addComponent(lblDescripcion)
+                            .addComponent(lblMonto)
+                            .addComponent(txtFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+                            .addComponent(txtPlaca)
+                            .addComponent(txtDescripcion)
+                            .addComponent(txtMontoTotal)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(btnAgregarMulta)
+                        .addGap(35, 35, 35)
+                        .addComponent(btnModificar)))
+                .addGap(19, 19, 19)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addComponent(btnAyuda, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(btnEliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnAgregarMulta)
-                            .addComponent(btnAyuda, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(104, 104, 104))))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(118, 118, 118)
-                .addComponent(lblTitulo)
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(31, 31, 31))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(22, 22, 22))))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(lblTitulo)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblTitulo)
                         .addGap(36, 36, 36)
                         .addComponent(lblFecha)
                         .addGap(29, 29, 29)
-                        .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblIngresarPlaca))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1)))
-                .addGap(31, 31, 31)
-                .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblDescripcion)
-                    .addComponent(btnAyuda))
-                .addGap(35, 35, 35)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAgregarMulta))
-                .addGap(36, 36, 36)
+                        .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(lblIngresarPlaca)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblMonto)
-                    .addComponent(btnSalir))
-                .addGap(18, 18, 18)
-                .addComponent(txtMontoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(80, 80, 80))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addComponent(btnAyuda)))
+                        .addGap(34, 34, 34)
+                        .addComponent(lblDescripcion)
+                        .addGap(35, 35, 35)
+                        .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36)
+                        .addComponent(lblMonto)
+                        .addGap(34, 34, 34)
+                        .addComponent(txtMontoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(71, 71, 71)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAgregarMulta)
+                    .addComponent(btnSalir)
+                    .addComponent(btnModificar)
+                    .addComponent(btnEliminar))
+                .addGap(23, 23, 23))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -231,6 +299,7 @@ public class AgenteTransito extends javax.swing.JFrame {
                 if (rowsAffected > 0) {
                     JOptionPane.showMessageDialog(null, "Multa registrada correctamente");
                     limpiarCasillas();
+                    consultaDatos();
                 } else {
                     JOptionPane.showMessageDialog(null, "Error al registrar la multa");
                 }
@@ -248,13 +317,143 @@ public class AgenteTransito extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarMultaActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        System.exit(1);
+        PanelPrincipal pane = new PanelPrincipal();
+        pane.setVisible(true);
+        this.hide();
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAyudaActionPerformed
         JOptionPane.showMessageDialog(null, "Si no aparece la placa\n Significa que Es Falsa la Paca");
     }//GEN-LAST:event_btnAyudaActionPerformed
-   
+
+    private void JtMultasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtMultasMouseClicked
+        int selecion = JtMultas.getSelectedRow();
+        this.txtPlaca.setText(JtMultas.getValueAt(selecion,1).toString());
+        this.txtDescripcion.setText(JtMultas.getValueAt(selecion,2).toString());
+        this.txtMontoTotal.setText(JtMultas.getValueAt(selecion,3).toString());
+        fila = selecion;
+        
+    }//GEN-LAST:event_JtMultasMouseClicked
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        int filaSeleccionada = JtMultas.getSelectedRow();
+        if (filaSeleccionada < 0) {
+            JOptionPane.showMessageDialog(null, "Seleccione una multa para eliminar.");
+            return;
+        } else {
+            try {
+                // Obtener el ID de la multa de la tabla
+                String placa = JtMultas.getValueAt(filaSeleccionada, 1).toString();
+                String buscarMulta = "SELECT ID_Multa FROM MULTA m JOIN Vehiculo v ON m.ID_Vehiculo = v.id_vehiculo WHERE v.PLACA = '" + placa + "'";
+                
+                con.conectarBDOracle();
+                con.rs = con.stmt.executeQuery(buscarMulta);
+                
+                if (con.rs.next()) {
+                    int idMulta = con.rs.getInt("ID_Multa");
+                    
+                    // Eliminar la multa de la base de datos
+                    String eliminarMulta = "DELETE FROM MULTA WHERE ID_Multa = ?";
+                    try (PreparedStatement stmt = con.cn.prepareStatement(eliminarMulta)) {
+                        stmt.setInt(1, idMulta);
+                        
+                        int rowsAffected = stmt.executeUpdate();
+                        if (rowsAffected > 0) {
+                            JOptionPane.showMessageDialog(null, "Multa eliminada correctamente");
+                            limpiarCasillas();
+                            consultaDatos();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error al eliminar la multa");
+                        }
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, "Error al eliminar la multa\n" + ex.getMessage());
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se encontró la multa con esa placa");
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error en la búsqueda de la multa\n" + ex.getMessage());
+            }
+        }
+
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+       int filaSeleccionada = JtMultas.getSelectedRow();
+        if (filaSeleccionada < 0) {
+            JOptionPane.showMessageDialog(null, "Seleccione una multa para modificar.");
+            return;
+        } else {
+            try {
+                // Obtener el ID de la multa de la tabla
+                String placa = JtMultas.getValueAt(filaSeleccionada, 1).toString();
+                String buscarMulta = "SELECT ID_Multa FROM MULTA m JOIN Vehiculo v ON m.ID_Vehiculo = v.id_vehiculo WHERE v.PLACA = '" + placa + "'";
+                
+                con.conectarBDOracle();
+                con.rs = con.stmt.executeQuery(buscarMulta);
+                
+                if (con.rs.next()) {
+                    int idMulta = con.rs.getInt("ID_Multa");
+                    String descripcion = txtDescripcion.getText();
+                    int monto = Integer.parseInt(txtMontoTotal.getText());
+                    
+                    // Modificar la multa en la base de datos
+                    String modificarMulta = "UPDATE MULTA SET Motivo = ?, Monto_Total = ? WHERE ID_Multa = ?";
+                    try (PreparedStatement stmt = con.cn.prepareStatement(modificarMulta)) {
+                        stmt.setString(1, descripcion);
+                        stmt.setInt(2, monto);
+                        stmt.setInt(3, idMulta);
+                        
+                        int rowsAffected = stmt.executeUpdate();
+                        if (rowsAffected > 0) {
+                            JOptionPane.showMessageDialog(null, "Multa modificada correctamente");
+                            limpiarCasillas();
+                            consultaDatos();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error al modificar la multa");
+                        }
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, "Error al modificar la multa\n" + ex.getMessage());
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se encontró la multa con esa placa");
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error en la búsqueda de la multa\n" + ex.getMessage());
+            }
+        }
+
+       
+                
+    }//GEN-LAST:event_btnModificarActionPerformed
+ private void consultaDatos(){
+try {
+         con.conectarBDOracle();
+            DefaultTableModel modeloMulta = new DefaultTableModel();
+            this.JtMultas.setModel(modeloMulta);
+            con.rs = con.stmt.executeQuery("SELECT m.fecha,v.PLACA, m.Motivo, m.Monto_Total FROM MULTA m JOIN Vehiculo v ON m.ID_Vehiculo = v.id_vehiculo");
+            ResultSetMetaData rsmd = con.rs.getMetaData();
+            int cantidadColumnas = rsmd.getColumnCount();
+            modeloMulta.addColumn("FECHA");
+            modeloMulta.addColumn("PLACA");
+            modeloMulta.addColumn("Motivo");
+            modeloMulta.addColumn("Monto");
+            while(con.rs.next()){
+                  Object []fila = new Object[cantidadColumnas];
+                  for (int i = 0; i < cantidadColumnas; i++) {//Inicia For
+                      fila[i] = con.rs.getObject(i+1);
+                  }//Termina for
+                  
+                  modeloMulta.addRow(fila);
+              }
+            
+            
+        } catch (SQLException ex) {
+             JOptionPane.showMessageDialog(null, "Error 2. de BD Consulta\n"+ex);
+        }
+
+       
+   }
     public void limpiarCasillas(){
         this.txtPlaca.setText(null);
         this.txtDescripcion.setText(null);
@@ -296,11 +495,15 @@ public class AgenteTransito extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable JtMultas;
     private javax.swing.JButton btnAgregarMulta;
     private javax.swing.JButton btnAyuda;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblFecha;
     private javax.swing.JLabel lblIngresarPlaca;

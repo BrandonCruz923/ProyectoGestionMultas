@@ -133,7 +133,9 @@ public class PanelPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIngresarAdministradorActionPerformed
 
     private void btnIngresarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarUsuarioActionPerformed
-        // TODO add your handling code here:
+        PagarMulta pagar = new PagarMulta();
+        pagar.setVisible(true);
+        this.hide();
     }//GEN-LAST:event_btnIngresarUsuarioActionPerformed
 
     /**

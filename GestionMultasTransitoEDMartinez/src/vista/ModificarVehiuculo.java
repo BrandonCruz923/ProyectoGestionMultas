@@ -5,8 +5,10 @@ import javax.swing.JOptionPane;
 import poo.Vehiculo;
 import poo.Conductor;
 import conexion.ConectarBD;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -14,12 +16,14 @@ import java.util.ArrayList;
  */
 public class ModificarVehiuculo extends javax.swing.JFrame {
     ConectarBD con = new ConectarBD();
+    int fila;
 
     
     public ModificarVehiuculo() {
         initComponents();
         setLocationRelativeTo(null);
         txtIDVehiculo.setEditable(false);
+        ConsultarDatos();
         
     }
 
@@ -35,9 +39,6 @@ public class ModificarVehiuculo extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
-        lblMatriculaBusqueda = new javax.swing.JLabel();
-        txtMatriculaBusqueda = new javax.swing.JTextField();
-        btnBuscar = new javax.swing.JButton();
         paneDatosVehiculo = new javax.swing.JPanel();
         lblMatricula = new javax.swing.JLabel();
         lblMarca = new javax.swing.JLabel();
@@ -55,7 +56,6 @@ public class ModificarVehiuculo extends javax.swing.JFrame {
         btnEliminarRegistro = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtDatosVehiculo = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,23 +66,6 @@ public class ModificarVehiuculo extends javax.swing.JFrame {
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblTitulo.setForeground(new java.awt.Color(255, 255, 255));
         lblTitulo.setText("Modificar El Registro ");
-
-        lblMatriculaBusqueda.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblMatriculaBusqueda.setForeground(new java.awt.Color(255, 255, 255));
-        lblMatriculaBusqueda.setText("Ingresa La Maticula Del Vehiuclo");
-
-        txtMatriculaBusqueda.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMatriculaBusquedaActionPerformed(evt);
-            }
-        });
-
-        btnBuscar.setText("Buscar");
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
-            }
-        });
 
         paneDatosVehiculo.setBackground(new java.awt.Color(255, 255, 255));
         paneDatosVehiculo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos del Vehiculo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14), new java.awt.Color(0, 0, 0))); // NOI18N
@@ -193,9 +176,12 @@ public class ModificarVehiuculo extends javax.swing.JFrame {
                 "Placa", "Marca", "Modelo", "Anio", "Id_Vehiculo"
             }
         ));
+        jtDatosVehiculo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtDatosVehiculoMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtDatosVehiculo);
-
-        jButton1.setText("Consultar Datos");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -207,29 +193,19 @@ public class ModificarVehiuculo extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(95, 95, 95)
                         .addComponent(lblTitulo))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblMatriculaBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtMatriculaBusqueda))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(paneDatosVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnModificarRegistro)
-                            .addComponent(btnEliminarRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnModificarRegistro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnEliminarRegistro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnVolver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(28, 28, 28)
                         .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(14, 34, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addGap(16, 16, 16))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -239,32 +215,24 @@ public class ModificarVehiuculo extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(lblTitulo)
-                        .addGap(27, 27, 27)
-                        .addComponent(lblMatriculaBusqueda)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtMatriculaBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscar))
-                        .addGap(26, 26, 26)
+                        .addGap(35, 35, 35)
                         .addComponent(paneDatosVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(28, 28, 28))
+                                .addGap(22, 22, 22))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(11, 11, 11)
                                 .addComponent(btnModificarRegistro)
-                                .addGap(44, 44, 44)
+                                .addGap(27, 27, 27)
                                 .addComponent(btnEliminarRegistro)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnVolver)))
+                        .addGap(33, 33, 33)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnVolver)
-                            .addComponent(jButton1))
-                        .addGap(33, 33, 33))))
+                        .addGap(47, 47, 47))))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -295,37 +263,6 @@ public class ModificarVehiuculo extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtMatriculaBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMatriculaBusquedaActionPerformed
-
-    }//GEN-LAST:event_txtMatriculaBusquedaActionPerformed
-
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        String matriculaIngresada = txtMatriculaBusqueda.getText();
-        if (matriculaIngresada.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debes Ingresar La Matricula Para Realizar La Busqueda");
-        } else {
-            try {
-                con.conectarBDOracle();
-                String busqueda = "SELECT placa,marca,modelo,anio,id_vehiculo FROM vehiculo WHERE placa = '"+matriculaIngresada+"' ";
-                con.rs = con.stmt.executeQuery(busqueda);
-                JOptionPane.showInternalMessageDialog(null, "Buscando Vehiculo Espere .....");
-                if (con.rs.next() == true) {
-                    this.txtMatricula.setText(con.rs.getString("placa"));
-                    this.txtMarca.setText(con.rs.getNString("marca"));
-                    this.txtModelo.setText(con.rs.getString("modelo"));
-                    this.txtAnio.setText(con.rs.getNString("anio"));
-                    this.txtIDVehiculo.setText(con.rs.getString("id_vehiculo"));
-                    JOptionPane.showInternalMessageDialog(null, "Vehiculo Encontrado Con Exito\nPuedes Modificar Los datos\nTambien Lo Puedes Eliminar");
-                } else {
-                    JOptionPane.showMessageDialog(null, "No Existe La Placa Con Esos Datos");
-                }
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Error 4 de BD Busqueda\n" +ex);
-            }
-        }
-
-    }//GEN-LAST:event_btnBuscarActionPerformed
-
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         Administrador admin = new Administrador();
         admin.setVisible(true);
@@ -345,10 +282,12 @@ public class ModificarVehiuculo extends javax.swing.JFrame {
              int idVehiuclo = Integer.parseInt(idTexto);
              try {
                  con.conectarBDOracle();
-                 String editarSQL= " UPDATE vehiculo SET placa = ' "+placa+ " ' ,marca = ' "+marca+ " ', modelo ='"+modelo+" ',anio = ' "+anio+"' WHERE id_vehiculo = '"+idVehiuclo+"'  ";
+                 String editarSQL= " UPDATE vehiculo SET placa ='"+placa+"',marca ='"+marca+"', modelo ='"+modelo+" ',anio = ' "+anio+"' WHERE id_vehiculo = '"+idVehiuclo+"'";
                  con.stmt.executeUpdate(editarSQL);
                  JOptionPane.showMessageDialog(null,"Vehiculo Editado Con Exito\n Verifica La Consulta ");
                  limpiarCasillas();
+                 ConsultarDatos();
+                 
              } catch (SQLException ex) {
                  JOptionPane.showMessageDialog(null, "Error Al Editar El Vehiculo"+ex);
              }
@@ -369,6 +308,7 @@ public class ModificarVehiuculo extends javax.swing.JFrame {
                  if (confirmarBaja == 1) {
                        JOptionPane.showMessageDialog(null, "Se Elimino Conductor De La Base De Datos \n"+confirmarBaja);
                      limpiarCasillas();
+                     ConsultarDatos();
                      
                  } else {
                      JOptionPane.showMessageDialog(null, "No se Encontro El Id del Vehiculo");
@@ -378,8 +318,49 @@ public class ModificarVehiuculo extends javax.swing.JFrame {
              }
         }
     }//GEN-LAST:event_btnEliminarRegistroActionPerformed
+
+    public void ConsultarDatos(){
+        try {
+            con.conectarBDOracle();
+            DefaultTableModel modeloVehiculo = new DefaultTableModel();
+            this.jtDatosVehiculo.setModel(modeloVehiculo);
+            con.rs = con.stmt.executeQuery("SELECT placa,marca,modelo,anio,id_vehiculo FROM vehiculo");
+            ResultSetMetaData rsmd = con.rs.getMetaData();
+             int cantidadColumnas = rsmd.getColumnCount();
+             modeloVehiculo.addColumn("PLACA");
+             modeloVehiculo.addColumn("MARCA");
+             modeloVehiculo.addColumn("MODELO");
+             modeloVehiculo.addColumn("AÑO");
+             modeloVehiculo.addColumn("ID");
+              while(con.rs.next()){
+                  Object []fila = new Object[cantidadColumnas];
+                  for (int i = 0; i < cantidadColumnas; i++) {//Inicia For
+                      fila[i] = con.rs.getObject(i+1);
+                  }//Termina for
+                  
+                  modeloVehiculo.addRow(fila);
+              }
+           
+             
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error 2. de BD Consulta\n"+ex);
+        }
+        
+    }
+    
+    private void jtDatosVehiculoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtDatosVehiculoMouseClicked
+        int selecion = jtDatosVehiculo.getSelectedRow();
+        this.txtMatricula.setText(jtDatosVehiculo.getValueAt(selecion,0).toString());
+        this.txtMarca.setText(jtDatosVehiculo.getValueAt(selecion,1).toString());
+        this.txtModelo.setText(jtDatosVehiculo.getValueAt(selecion,2).toString());
+        this.txtAnio.setText(jtDatosVehiculo.getValueAt(selecion,3).toString());
+        this.txtIDVehiculo.setText(jtDatosVehiculo.getValueAt(selecion,4).toString());
+         fila=selecion;
+        
+        
+    }//GEN-LAST:event_jtDatosVehiculoMouseClicked
     public void limpiarCasillas(){
-        this.txtMatriculaBusqueda.setText(null);
+        
         this.txtMatricula.setText(null);
         this.txtMarca.setText(null);
         this.txtModelo.setText(null);
@@ -422,12 +403,10 @@ public class ModificarVehiuculo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminarRegistro;
     private javax.swing.JButton btnModificarRegistro;
     private javax.swing.JButton btnVolver;
     private javax.swing.JLabel idConductor;
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -436,7 +415,6 @@ public class ModificarVehiuculo extends javax.swing.JFrame {
     private javax.swing.JLabel lblImg;
     private javax.swing.JLabel lblMarca;
     private javax.swing.JLabel lblMatricula;
-    private javax.swing.JLabel lblMatriculaBusqueda;
     private javax.swing.JLabel lblModelo;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel paneDatosVehiculo;
@@ -444,7 +422,6 @@ public class ModificarVehiuculo extends javax.swing.JFrame {
     private javax.swing.JTextField txtIDVehiculo;
     private javax.swing.JTextField txtMarca;
     private javax.swing.JTextField txtMatricula;
-    private javax.swing.JTextField txtMatriculaBusqueda;
     private javax.swing.JTextField txtModelo;
     // End of variables declaration//GEN-END:variables
 }

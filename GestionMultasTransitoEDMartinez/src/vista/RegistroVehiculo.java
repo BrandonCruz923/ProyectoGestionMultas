@@ -3,8 +3,10 @@ import java.util.ArrayList;
 import poo.Conductor;
 import poo.Vehiculo;
 import conexion.ConectarBD;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -14,6 +16,7 @@ public class RegistroVehiculo extends javax.swing.JFrame {
     ArrayList<Vehiculo> listaVehiculo = new ArrayList<>();
     Vehiculo ingresaVehiculo;
     ConectarBD con = new ConectarBD();
+    int fila;
     
   
  
@@ -21,6 +24,7 @@ public class RegistroVehiculo extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);//Centra la ventana
         txtIdConductor.setEditable(false);
+        consultarDatos();
     }
 
     /**
@@ -34,9 +38,6 @@ public class RegistroVehiculo extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
-        lblNombre = new javax.swing.JLabel();
-        txtNombre = new javax.swing.JTextField();
-        btnBuscar = new javax.swing.JButton();
         paneDatosVehiculo = new javax.swing.JPanel();
         lblMatricula = new javax.swing.JLabel();
         lblMarca = new javax.swing.JLabel();
@@ -51,31 +52,17 @@ public class RegistroVehiculo extends javax.swing.JFrame {
         btnAgregar = new javax.swing.JButton();
         lblImg = new javax.swing.JLabel();
         btnVolver = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtConductores = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(1, 5, 52));
 
-        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTitulo.setForeground(new java.awt.Color(255, 255, 255));
         lblTitulo.setText("Registro De Vehiculo");
-
-        lblNombre.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblNombre.setForeground(new java.awt.Color(255, 255, 255));
-        lblNombre.setText("Ingresa el Nombre Del Dueño");
-
-        txtNombre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNombreActionPerformed(evt);
-            }
-        });
-
-        btnBuscar.setText("Buscar");
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
-            }
-        });
 
         paneDatosVehiculo.setBackground(new java.awt.Color(255, 255, 255));
         paneDatosVehiculo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos del Vehiculo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14), new java.awt.Color(0, 0, 0))); // NOI18N
@@ -165,6 +152,9 @@ public class RegistroVehiculo extends javax.swing.JFrame {
 
         lblImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/una patrulla modificado con un tamaño de pixeles de 100 por 100 (1).png"))); // NOI18N
 
+        btnVolver.setBackground(new java.awt.Color(51, 255, 51));
+        btnVolver.setForeground(new java.awt.Color(0, 0, 0));
+        btnVolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
         btnVolver.setText("Volver");
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -172,55 +162,73 @@ public class RegistroVehiculo extends javax.swing.JFrame {
             }
         });
 
+        jtConductores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "id_Conductor", "Nombre"
+            }
+        ));
+        jtConductores.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtConductoresMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jtConductores);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Seleciona el Conductor Para Obtener el id");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtNombre))
-                        .addGap(35, 35, 35)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
+                        .addGap(29, 29, 29)
+                        .addComponent(paneDatosVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(paneDatosVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(95, 95, 95)
-                                .addComponent(lblTitulo)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(lblImg)
-                                .addGap(15, 15, 15))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnVolver)
-                                .addGap(58, 58, 58))))))
+                        .addGap(69, 69, 69)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(lblTitulo))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblImg)
+                        .addGap(45, 45, 45))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(16, 16, 16))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnVolver)
+                .addGap(97, 97, 97))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(lblTitulo)
+                .addGap(37, 37, 37)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addComponent(paneDatosVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(87, 87, 87))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
                 .addComponent(lblImg)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnVolver)
-                .addGap(59, 59, 59))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(lblTitulo)
-                .addGap(27, 27, 27)
-                .addComponent(lblNombre)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
-                .addComponent(paneDatosVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46))
+                .addComponent(btnVolver)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -231,40 +239,14 @@ public class RegistroVehiculo extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
         // TODO add your handling code here:
-
-    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
-    }//GEN-LAST:event_txtNombreActionPerformed
-
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-         String nombre = txtNombre.getText().trim();
-         if(nombre.isEmpty()){
-             JOptionPane.showMessageDialog(null, "Se Debe Agregar El Nombre En La Casilla");
-         }else {
-             try {
-                 con.conectarBDOracle();
-                 String consultaSQL = "SELECT id_conductor FROM conductor WHERE NOMBRE = '" + nombre + "'";
-                 con.rs = con.stmt.executeQuery(consultaSQL);
-                 if (con.rs.next() == true) {//Recorre todos los elementos de la base de datos
-                     //imprime el id_conductor en la casilla 
-                     this.txtIdConductor.setText(con.rs.getString("id_conductor"));
-                     JOptionPane.showMessageDialog(null, "Se Encontro el Id del Conductor");
-                 } else {
-                     JOptionPane.showMessageDialog(null, "No Encontro El Conductor Verifica Si Esta Agregado");
-                 }
-                 
-             } catch (SQLException ex) {
-                 JOptionPane.showMessageDialog(null,"Error 4 de BD Busqueda\n" +ex);
-             }
-             
-         }
-             
-    }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         
@@ -282,9 +264,9 @@ public class RegistroVehiculo extends javax.swing.JFrame {
             try {
                con.conectarBDOracle();
                String altaVehiculo = "INSERT INTO VEHICULO (ID_Vehiculo, Placa, Marca, Modelo, Anio, ID_Conductor) " +
-                     "VALUES (seq_id_vehiculo.NEXTVAL, '" + ingresaVehiculo.getPlaca() + "', '" + 
-                     ingresaVehiculo.getMarca() + "', '" + ingresaVehiculo.getModelo() + "', '" + 
-                     ingresaVehiculo.getAnio()+ "','" +ingresaVehiculo.getIdConductor()+"')";
+                     "VALUES (seq_id_vehiculo.NEXTVAL,'"+ingresaVehiculo.getPlaca()+"','"+ 
+                     ingresaVehiculo.getMarca()+"','"+ingresaVehiculo.getModelo()+"', '"+ 
+                     ingresaVehiculo.getAnio()+"','"+ingresaVehiculo.getIdConductor()+"')";
                      con.stmt.executeUpdate(altaVehiculo);
                      JOptionPane.showMessageDialog(null, "Registro insertado con exito");
                      limpiarCasillas();
@@ -301,9 +283,41 @@ public class RegistroVehiculo extends javax.swing.JFrame {
         admin.setVisible(true);
         this.hide();
     }//GEN-LAST:event_btnVolverActionPerformed
+  
+    private void consultarDatos(){
+        try {
+            con.conectarBDOracle();
+            DefaultTableModel modeloConductor = new DefaultTableModel();
+            this.jtConductores.setModel(modeloConductor);
+            String consulta = "SELECT id_conductor, nombre From conductor";
+            con.rs = con.stmt.executeQuery(consulta);
+            ResultSetMetaData rsmd = con.rs.getMetaData();
+            int cantidadColumnas = rsmd.getColumnCount();
+            modeloConductor.addColumn("id_Conductor");
+            modeloConductor.addColumn("Nombre");
+             while(con.rs.next()){
+                  Object []fila = new Object[cantidadColumnas];
+                  for (int i = 0; i < cantidadColumnas; i++) {//Inicia For
+                      fila[i] = con.rs.getObject(i+1);
+                  }//Termina for
+                  
+                  modeloConductor.addRow(fila);
+              }
+            
+            
+        } catch (SQLException ex) {
+             JOptionPane.showMessageDialog(null, "Error 2. de BD Consulta\n"+ex);
+        }
+    }
+    private void jtConductoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtConductoresMouseClicked
+        int selecion = jtConductores.getSelectedRow();
+        this.txtIdConductor.setText(jtConductores.getValueAt(selecion,0).toString());
+        fila =selecion;
+        
+    }//GEN-LAST:event_jtConductoresMouseClicked
      
      public void limpiarCasillas(){
-        this.txtNombre.setText("");
+       
         this.txtMatricula.setText("");
         this.txtMarca.setText("");
         this.txtModelo.setText("");
@@ -348,16 +362,17 @@ public class RegistroVehiculo extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnVolver;
     private javax.swing.JLabel idConductor;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jtConductores;
     private javax.swing.JLabel lblAniio;
     private javax.swing.JLabel lblImg;
     private javax.swing.JLabel lblMarca;
     private javax.swing.JLabel lblMatricula;
     private javax.swing.JLabel lblModelo;
-    private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel paneDatosVehiculo;
     private javax.swing.JTextField txtAnio;
@@ -365,6 +380,5 @@ public class RegistroVehiculo extends javax.swing.JFrame {
     private javax.swing.JTextField txtMarca;
     private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtModelo;
-    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }
