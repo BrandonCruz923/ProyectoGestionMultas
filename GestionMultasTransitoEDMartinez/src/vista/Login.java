@@ -182,7 +182,7 @@ ConectarBD con =  new ConectarBD();
          String password = new String(txtPassword.getPassword()).trim();
          
          if (!userName.equals("") || !password.equals("")){
-            String consultaSQL = "SELECT TIPOUSUARIO FROM usuarios WHERE username = ? AND password = ?";
+            String consultaSQL = "SELECT TIPOUSUARIO,idUsuario FROM usuarios WHERE username = ? AND password = ?";
          try {
          con.conectarBDOracle();
          PreparedStatement stmt = con.cn.prepareStatement(consultaSQL);
@@ -190,6 +190,7 @@ ConectarBD con =  new ConectarBD();
          stmt.setString(2, password);
          con.rs = stmt.executeQuery();
          if (con.rs.next()) {
+         int idUsuario = con.rs.getInt("idUsuario"); // Obtener el ID del usuario
         String tipoNivel = con.rs.getString("TIPOUSUARIO");
         if (tipoNivel.equalsIgnoreCase("Administrador")) {
             dispose();
@@ -197,7 +198,7 @@ ConectarBD con =  new ConectarBD();
             ad.setVisible(true);
         } else if (tipoNivel.equalsIgnoreCase("Agente_Transito")) {
             dispose();
-            AgenteTransito at = new AgenteTransito();
+            AgenteTransito at = new AgenteTransito(idUsuario);
             at.setVisible(true);
         }
                      } else {

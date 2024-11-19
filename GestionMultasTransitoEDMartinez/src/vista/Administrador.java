@@ -194,7 +194,9 @@ public class Administrador extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegistarVehiculoActionPerformed
 
     private void btnEditar_Eliminar_VehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditar_Eliminar_VehiculoActionPerformed
-        // TODO add your handling code here:
+        ModificarVehiuculo vehiuclo = new ModificarVehiuculo();
+        vehiuclo.setVisible(true);
+        this.hide();
     }//GEN-LAST:event_btnEditar_Eliminar_VehiculoActionPerformed
 
     private void btnEditar_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditar_EliminarActionPerformed

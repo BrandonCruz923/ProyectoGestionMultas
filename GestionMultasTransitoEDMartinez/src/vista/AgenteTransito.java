@@ -1,21 +1,41 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-package vista;
 
+package vista;
+import poo.Multa;
+import conexion.ConectarBD;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import java.sql.PreparedStatement;
 /**
  *
  * @author capri
  */
 public class AgenteTransito extends javax.swing.JFrame {
+    ArrayList<Multa> listaMultas = new ArrayList<>();
+    Multa ingresaMulta;
+    ConectarBD con = new ConectarBD();
+    SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd"); 
+     Date fechaActual = new Date();
+     String fechaTexto = formatoFecha.format(fechaActual); 
+     // Establecer la fecha en el JTextField 
+      
 
-    /**
-     * Creates new form AgenteTransito
-     */
-    public AgenteTransito() {
+
+   private int idUsuario;
+
+    
+    public AgenteTransito(int idUsuario) {
+        this.idUsuario = idUsuario; // Guardar el ID del usuario
         initComponents();
+        //mostrarMensajeConId();
+        setLocationRelativeTo(null);
+        txtFecha.setText(fechaTexto);
+        txtFecha.setEditable(false);
+        
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -26,32 +46,220 @@ public class AgenteTransito extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        lblTitulo = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        lblFecha = new javax.swing.JLabel();
+        txtFecha = new javax.swing.JTextField();
+        lblIngresarPlaca = new javax.swing.JLabel();
+        txtPlaca = new javax.swing.JTextField();
+        lblDescripcion = new javax.swing.JLabel();
+        txtDescripcion = new javax.swing.JTextField();
+        lblMonto = new javax.swing.JLabel();
+        txtMontoTotal = new javax.swing.JTextField();
+        btnAyuda = new javax.swing.JButton();
+        btnAgregarMulta = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Soy un Agente de Transito");
+        jPanel1.setBackground(new java.awt.Color(1, 5, 52));
+
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(255, 255, 255));
+        lblTitulo.setText("Registro de Multas ");
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/logo para agregar multas de tráfico (1).png"))); // NOI18N
+
+        lblFecha.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblFecha.setForeground(new java.awt.Color(255, 255, 255));
+        lblFecha.setText("Ingresa La fecha");
+
+        lblIngresarPlaca.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblIngresarPlaca.setForeground(new java.awt.Color(255, 255, 255));
+        lblIngresarPlaca.setText("Agregar Placa Vehicular");
+
+        lblDescripcion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblDescripcion.setForeground(new java.awt.Color(255, 255, 255));
+        lblDescripcion.setText("Agrega descripcion");
+
+        lblMonto.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblMonto.setForeground(new java.awt.Color(255, 255, 255));
+        lblMonto.setText("Agregar Monto");
+
+        btnAyuda.setBackground(new java.awt.Color(102, 255, 102));
+        btnAyuda.setForeground(new java.awt.Color(0, 0, 0));
+        btnAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
+        btnAyuda.setText("Ayuda");
+        btnAyuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAyudaActionPerformed(evt);
+            }
+        });
+
+        btnAgregarMulta.setBackground(new java.awt.Color(102, 255, 102));
+        btnAgregarMulta.setForeground(new java.awt.Color(0, 0, 0));
+        btnAgregarMulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
+        btnAgregarMulta.setText("Agregar Multa ");
+        btnAgregarMulta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarMultaActionPerformed(evt);
+            }
+        });
+
+        btnSalir.setBackground(new java.awt.Color(102, 255, 102));
+        btnSalir.setForeground(new java.awt.Color(0, 0, 0));
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
+        btnSalir.setText("Salir ");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(59, 59, 59)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblFecha)
+                    .addComponent(lblIngresarPlaca)
+                    .addComponent(lblDescripcion)
+                    .addComponent(lblMonto)
+                    .addComponent(txtFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+                    .addComponent(txtPlaca)
+                    .addComponent(txtDescripcion)
+                    .addComponent(txtMontoTotal))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(92, 92, 92)
+                        .addComponent(jLabel1)
+                        .addContainerGap(76, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnAgregarMulta)
+                            .addComponent(btnAyuda, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(104, 104, 104))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(118, 118, 118)
+                .addComponent(lblTitulo)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(lblTitulo)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(lblFecha)
+                        .addGap(29, 29, 29)
+                        .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblIngresarPlaca))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1)))
+                .addGap(31, 31, 31)
+                .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblDescripcion)
+                    .addComponent(btnAyuda))
+                .addGap(35, 35, 35)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAgregarMulta))
+                .addGap(36, 36, 36)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblMonto)
+                    .addComponent(btnSalir))
+                .addGap(18, 18, 18)
+                .addComponent(txtMontoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(80, 80, 80))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(130, 130, 130)
-                .addComponent(jLabel1)
-                .addContainerGap(130, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(79, 79, 79)
-                .addComponent(jLabel1)
-                .addContainerGap(205, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAgregarMultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarMultaActionPerformed
+       String placa = txtPlaca.getText();
+       String descripcion = txtDescripcion.getText();
+       int monto = Integer.parseInt(txtMontoTotal.getText());
+       int idVehiculo;
+       int idAgente = idUsuario;
+        if (placa.isEmpty() || descripcion.isEmpty() || monto == 0) {
+              JOptionPane.showMessageDialog(null, "No Puedes Dejar Campos Vacios");
+        } else {
+             String buscaPlaca = "SELECT id_vehiculo FROM Vehiculo WHERE PLACA = '"+placa+"' ";
+            
+            try {
+                con.conectarBDOracle();
+                con.rs =con.stmt.executeQuery(buscaPlaca);
+                JOptionPane.showInternalMessageDialog(null, "Buscando Placa  Espere .....");
+                if (con.rs.next()== true) {
+                    idVehiculo = con.rs.getInt("id_vehiculo");
+                    // Inserción de la multa
+            String insertaMulta = "INSERT INTO MULTA (ID_Multa, Fecha, Motivo, Monto_Total, id_Agente, ID_Vehiculo) " +
+                                  "VALUES (seq_multa.NEXTVAL, SYSDATE, ?, ?, ?, ?)";
+
+            try (PreparedStatement stmt = con.cn.prepareStatement(insertaMulta)) {
+                stmt.setString(1, descripcion); // Motivo de la multa
+                stmt.setInt(2, monto); // Monto total de la multa
+                stmt.setInt(3, idAgente); // ID del agente
+                stmt.setInt(4, idVehiculo); // ID del vehículo
+
+                int rowsAffected = stmt.executeUpdate();
+                if (rowsAffected > 0) {
+                    JOptionPane.showMessageDialog(null, "Multa registrada correctamente");
+                    limpiarCasillas();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al registrar la multa");
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error al insertar la multa\n" + ex.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No Existe La Placa Con Esos Datos");
+        }
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error 4 de BD Busqueda\n" + ex.getMessage());
+           }
+        }
+    }//GEN-LAST:event_btnAgregarMultaActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        System.exit(1);
+    }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void btnAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAyudaActionPerformed
+        JOptionPane.showMessageDialog(null, "Si no aparece la placa\n Significa que Es Falsa la Paca");
+    }//GEN-LAST:event_btnAyudaActionPerformed
+   
+    public void limpiarCasillas(){
+        this.txtPlaca.setText(null);
+        this.txtDescripcion.setText(null);
+        this.txtMontoTotal.setText(null);
+    }
     /**
      * @param args the command line arguments
      */
@@ -82,12 +290,25 @@ public class AgenteTransito extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AgenteTransito().setVisible(true);
+                new AgenteTransito(1).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregarMulta;
+    private javax.swing.JButton btnAyuda;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblDescripcion;
+    private javax.swing.JLabel lblFecha;
+    private javax.swing.JLabel lblIngresarPlaca;
+    private javax.swing.JLabel lblMonto;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JTextField txtDescripcion;
+    private javax.swing.JTextField txtFecha;
+    private javax.swing.JTextField txtMontoTotal;
+    private javax.swing.JTextField txtPlaca;
     // End of variables declaration//GEN-END:variables
 }
