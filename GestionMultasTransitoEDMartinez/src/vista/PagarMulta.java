@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package vista;
 import poo.PagoMulta;
 import conexion.ConectarBD;
@@ -10,6 +6,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 
 /**
  *
@@ -21,6 +18,7 @@ public class PagarMulta extends javax.swing.JFrame {
     public PagarMulta() {
         initComponents();
         this.setLocationRelativeTo(null);
+        setTitle("Pago De Multa");
     }
 
     /**
@@ -244,23 +242,33 @@ public class PagarMulta extends javax.swing.JFrame {
            String valorSeleccionado = jtMultasTable.getValueAt(filaSeleccionada, 0).toString(); 
            // Guardar el valor en una variable String valorGuardado = valorSeleccionado;
            String valorGuardado = valorSeleccionado;
-           String buscarMulta = "SELECT ID_Multa FROM MULTA m JOIN Vehiculo v ON m.ID_Vehiculo = v.id_vehiculo WHERE v.PLACA = '" +valorGuardado+ "'";
-                try{
+          // String buscarMulta = "SELECT ID_Multa FROM MULTA m JOIN Vehiculo v ON m.ID_Vehiculo = v.id_vehiculo WHERE v.PLACA = '" +valorGuardado+ "'";
+            String buscarMulta = "SELECT m.ID_Multa, m.Fecha, m.Motivo, m.Monto_Total FROM MULTA m JOIN Vehiculo v ON m.ID_Vehiculo = v.id_vehiculo  WHERE v.PLACA ='"+valorGuardado+"'";
+           
+           try{
                 con.conectarBDOracle();
                 con.rs = con.stmt.executeQuery(buscarMulta);
                 
                 if (con.rs.next()) {
                     int idMulta = con.rs.getInt("ID_Multa");
+                    String fecha = con.rs.getString("Fecha");
+                    String motivo = con.rs.getString("Motivo");
+                    int monto = con.rs.getInt("Monto_Total");
+                   
                     
                     // Eliminar la multa de la base de datos
                     String eliminarMulta = "DELETE FROM MULTA WHERE ID_Multa = ?";
                     try (PreparedStatement stmt = con.cn.prepareStatement(eliminarMulta)) {
                         stmt.setInt(1, idMulta);
-                        
                         int rowsAffected = stmt.executeUpdate();
                         if (rowsAffected > 0) {
                             JOptionPane.showMessageDialog(null, "Multa Pagada correctamente");
                             //limpiarCasillas();
+                            
+                            // Generar ticket de multa pagada en PDF
+                           // generarTicketPDF(fecha, valorGuardado, motivo, monto);
+                             imprimirTicket(fecha, valorGuardado, motivo, monto);
+                           
                             consultarDatos();
                         } else {
                             JOptionPane.showMessageDialog(null, "Error al eliminar la multa");
@@ -279,7 +287,38 @@ public class PagarMulta extends javax.swing.JFrame {
             
         } 
     }//GEN-LAST:event_btnPagarActionPerformed
-  public void consultarDatos(){
+     private void imprimirTicket(String fecha, String placa, String motivo, int monto) {
+    String ticket = "********** Ticket de Multa Pagada **********\n" +
+                    "Fecha: " + fecha + "\n" +
+                    "Placa: " + placa + "\n" +
+                    "Motivo: " + motivo + "\n" +
+                    "Monto: $" + monto + "\n" +
+                    "*******************************************";
+    JOptionPane.showMessageDialog(null, ticket, "Ticket de Multa Pagada", JOptionPane.INFORMATION_MESSAGE);
+}
+
+   /* private void generarTicketPDF(String fecha, String placa, String motivo, int monto) {
+        try {
+            String ruta = "ticket_multa_pagada_" + placa + ".pdf";
+            PdfWriter writer = new PdfWriter(ruta);
+            com.itextpdf.kernel.pdf.PdfDocument pdf = new com.itextpdf.kernel.pdf.PdfDocument(writer);
+            Document documento = new Document(pdf);
+
+            documento.add(new Paragraph("********** Ticket de Multa Pagada **********"));
+            documento.add(new Paragraph("Fecha: " + fecha));
+            documento.add(new Paragraph("Placa: " + placa));
+            documento.add(new Paragraph("Motivo: " + motivo));
+            documento.add(new Paragraph("Monto: $" + monto));
+            documento.add(new Paragraph("*******************************************"));
+
+            documento.close();
+            JOptionPane.showMessageDialog(null, "Ticket guardado en: " + ruta, "Ticket de Multa Pagada", JOptionPane.INFORMATION_MESSAGE);
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Error al guardar el ticket\n" + ex.getMessage());
+        }
+    }*/
+
+public void consultarDatos(){
 try{
            String matricula = txtPlacaBuscar.getText();
           String busquedaSQL = "SELECT v.PLACA, m.Motivo, m.Monto_Total FROM MULTA m JOIN Vehiculo v ON v.id_vehiculo = m.ID_Vehiculo WHERE v.PLACA = '" +matricula + "'";
@@ -305,6 +344,7 @@ try{
              JOptionPane.showMessageDialog(null, "Error 2. de BD Consulta\n"+ex);
         }
       
+
   }
     /**
      * @param args the command line arguments

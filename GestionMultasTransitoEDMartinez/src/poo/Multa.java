@@ -8,31 +8,30 @@ import java.util.Date;
  * @author capri
  */
 public class Multa {
-    private String id_Multa;
+    private int id_Multa;
     private Date fecha;
+    private String placa;
     private String motivo;
     private int monto;
-    private int id_agente;
-    private int id_vehiculo;
+   
     
     public Multa (){
         
     }
 
-    public Multa(String id_Multa, Date fecha, String motivo, int monto, int id_agente, int id_vehiculo) {
+    public Multa(int id_Multa, Date fecha, String placa, String motivo, int monto) {
         this.id_Multa = id_Multa;
         this.fecha = fecha;
+        this.placa = placa;
         this.motivo = motivo;
         this.monto = monto;
-        this.id_agente = id_agente;
-        this.id_vehiculo = id_vehiculo;
     }
 
-    public String getId_Multa() {
+    public int getId_Multa() {
         return id_Multa;
     }
 
-    public void setId_Multa(String id_Multa) {
+    public void setId_Multa(int id_Multa) {
         this.id_Multa = id_Multa;
     }
 
@@ -42,6 +41,14 @@ public class Multa {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
     }
 
     public String getMotivo() {
@@ -60,20 +67,6 @@ public class Multa {
         this.monto = monto;
     }
 
-    public int getId_agente() {
-        return id_agente;
-    }
-
-    public void setId_agente(int id_agente) {
-        this.id_agente = id_agente;
-    }
-
-    public int getId_vehiculo() {
-        return id_vehiculo;
-    }
-
-    public void setId_vehiculo(int id_vehiculo) {
-        this.id_vehiculo = id_vehiculo;
-    }
     
+
 }

@@ -9,13 +9,15 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
 import java.sql.ResultSetMetaData;
+import java.util.Stack;
 import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author capri
  */
 public class AgenteTransito extends javax.swing.JFrame {
-    ArrayList<Multa> listaMultas = new ArrayList<>();
+    
+    Stack<Multa> pilaMultas = new Stack<>();
     Multa ingresaMulta;
     ConectarBD con = new ConectarBD();
     SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd"); 
@@ -33,6 +35,7 @@ public class AgenteTransito extends javax.swing.JFrame {
         initComponents();
         //mostrarMensajeConId();
         setLocationRelativeTo(null);
+        setTitle("Sistema Agente de Transito");
         txtFecha.setText(fechaTexto);
         txtFecha.setEditable(false);
         consultaDatos();
@@ -274,10 +277,20 @@ public class AgenteTransito extends javax.swing.JFrame {
        int monto = Integer.parseInt(txtMontoTotal.getText());
        int idVehiculo;
        int idAgente = idUsuario;
+       
         if (placa.isEmpty() || descripcion.isEmpty() || monto == 0) {
               JOptionPane.showMessageDialog(null, "No Puedes Dejar Campos Vacios");
         } else {
              String buscaPlaca = "SELECT id_vehiculo FROM Vehiculo WHERE PLACA = '"+placa+"' ";
+             ingresaMulta = new Multa(WIDTH, fechaActual, placa, descripcion,monto);
+             pilaMultas.push(ingresaMulta);
+            /* Multa multaReciente = pilaMultas.pop();
+             JOptionPane.showMessageDialog(null, "Datos de Multa\n"
+                                                                           + "\nFecha: "+multaReciente.getFecha()
+                                                                           + "\nPlaca: "+multaReciente.getPlaca()
+                                                                           + "\nDescripcion: "+multaReciente.getMotivo()
+                                                                           +"\nMonto: "+multaReciente.getMonto()
+                                                                          );*/
             
             try {
                 con.conectarBDOracle();
@@ -285,6 +298,7 @@ public class AgenteTransito extends javax.swing.JFrame {
                 JOptionPane.showInternalMessageDialog(null, "Buscando Placa  Espere .....");
                 if (con.rs.next()== true) {
                     idVehiculo = con.rs.getInt("id_vehiculo");
+                     
                     // Inserción de la multa
             String insertaMulta = "INSERT INTO MULTA (ID_Multa, Fecha, Motivo, Monto_Total, id_Agente, ID_Vehiculo) " +
                                   "VALUES (seq_multa.NEXTVAL, SYSDATE, ?, ?, ?, ?)";
@@ -298,6 +312,13 @@ public class AgenteTransito extends javax.swing.JFrame {
                 int rowsAffected = stmt.executeUpdate();
                 if (rowsAffected > 0) {
                     JOptionPane.showMessageDialog(null, "Multa registrada correctamente");
+                     Multa multaReciente = pilaMultas.pop();
+                     JOptionPane.showMessageDialog(null, "Datos de Multa\n"
+                                                                           + "\nFecha: "+multaReciente.getFecha()
+                                                                           + "\nPlaca: "+multaReciente.getPlaca()
+                                                                           + "\nDescripcion: "+multaReciente.getMotivo()
+                                                                           +"\nMonto: "+multaReciente.getMonto()
+                                                                          );
                     limpiarCasillas();
                     consultaDatos();
                 } else {
@@ -357,11 +378,23 @@ public class AgenteTransito extends javax.swing.JFrame {
                     try (PreparedStatement stmt = con.cn.prepareStatement(eliminarMulta)) {
                         stmt.setInt(1, idMulta);
                         
+                        
                         int rowsAffected = stmt.executeUpdate();
                         if (rowsAffected > 0) {
                             JOptionPane.showMessageDialog(null, "Multa eliminada correctamente");
+                            
+                            // Eliminar la multa de la pila
+                            if (!pilaMultas.isEmpty()) {
+                                Multa eliminada = pilaMultas.pop();
+                                JOptionPane.showMessageDialog(null, "Se eliminó la multa de la placa: " + eliminada.getPlaca());
+                            }
+
+                            // Eliminar la fila de la tabla
+                            DefaultTableModel modelo = (DefaultTableModel) JtMultas.getModel();
+                            modelo.removeRow(filaSeleccionada);
+
                             limpiarCasillas();
-                            consultaDatos();
+
                         } else {
                             JOptionPane.showMessageDialog(null, "Error al eliminar la multa");
                         }

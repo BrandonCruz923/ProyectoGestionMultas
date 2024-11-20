@@ -19,6 +19,7 @@ public class Administrador extends javax.swing.JFrame {
     public Administrador() {
         initComponents();
            setLocationRelativeTo(null);//Centra la ventana
+           setTitle("Sistema Administrador");
            consultarDatos();
     }
 
@@ -48,6 +49,9 @@ public class Administrador extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Sistema Administrador ");
 
+        btnVolver.setBackground(new java.awt.Color(102, 255, 102));
+        btnVolver.setForeground(new java.awt.Color(0, 0, 0));
+        btnVolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
         btnVolver.setText("Volver a menu ");
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -55,6 +59,9 @@ public class Administrador extends javax.swing.JFrame {
             }
         });
 
+        btnSalir.setBackground(new java.awt.Color(102, 255, 102));
+        btnSalir.setForeground(new java.awt.Color(0, 0, 0));
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
         btnSalir.setText("Salir ");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -77,6 +84,9 @@ public class Administrador extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/placa-de-policia (2).png"))); // NOI18N
 
+        btnRegistarConductor.setBackground(new java.awt.Color(102, 255, 102));
+        btnRegistarConductor.setForeground(new java.awt.Color(0, 0, 0));
+        btnRegistarConductor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
         btnRegistarConductor.setText("Registar Conductor");
         btnRegistarConductor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,6 +94,9 @@ public class Administrador extends javax.swing.JFrame {
             }
         });
 
+        btnRegistarVehiculo.setBackground(new java.awt.Color(102, 255, 102));
+        btnRegistarVehiculo.setForeground(new java.awt.Color(0, 0, 0));
+        btnRegistarVehiculo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
         btnRegistarVehiculo.setText("Registar Vehiculo");
         btnRegistarVehiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,6 +104,9 @@ public class Administrador extends javax.swing.JFrame {
             }
         });
 
+        btnEditar_Eliminar.setBackground(new java.awt.Color(102, 255, 102));
+        btnEditar_Eliminar.setForeground(new java.awt.Color(0, 0, 0));
+        btnEditar_Eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
         btnEditar_Eliminar.setText("Editar o Eliminar Conductor");
         btnEditar_Eliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -98,6 +114,9 @@ public class Administrador extends javax.swing.JFrame {
             }
         });
 
+        btnEditar_Eliminar_Vehiculo.setBackground(new java.awt.Color(102, 255, 102));
+        btnEditar_Eliminar_Vehiculo.setForeground(new java.awt.Color(0, 0, 0));
+        btnEditar_Eliminar_Vehiculo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
         btnEditar_Eliminar_Vehiculo.setText("Editar o Eliminar Vehiculo");
         btnEditar_Eliminar_Vehiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -116,10 +135,10 @@ public class Administrador extends javax.swing.JFrame {
                         .addComponent(jLabel2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnVolver)
-                                .addGap(117, 117, 117)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnSalir))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
@@ -140,30 +159,25 @@ public class Administrador extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(jLabel1)
-                        .addGap(36, 36, 36)
-                        .addComponent(btnRegistarConductor)
-                        .addGap(31, 31, 31)
-                        .addComponent(btnRegistarVehiculo)
-                        .addGap(31, 31, 31)
-                        .addComponent(btnEditar_Eliminar))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addComponent(jLabel2)
                         .addGap(40, 40, 40)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnVolver)
-                            .addComponent(btnSalir))
-                        .addGap(19, 19, 19))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRegistarConductor)
+                        .addGap(30, 30, 30)
+                        .addComponent(btnRegistarVehiculo)
                         .addGap(29, 29, 29)
-                        .addComponent(btnEditar_Eliminar_Vehiculo)
-                        .addContainerGap(40, Short.MAX_VALUE))))
+                        .addComponent(btnEditar_Eliminar)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnVolver)
+                    .addComponent(btnSalir)
+                    .addComponent(btnEditar_Eliminar_Vehiculo))
+                .addGap(27, 27, 27))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

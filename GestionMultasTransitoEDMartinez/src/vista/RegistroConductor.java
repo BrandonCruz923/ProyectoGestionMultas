@@ -4,6 +4,7 @@ import poo.Conductor;
 import conexion.ConectarBD;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Stack;
 import javax.swing.JOptionPane;
 
 /**
@@ -11,7 +12,7 @@ import javax.swing.JOptionPane;
  * @author capri
  */
 public class RegistroConductor extends javax.swing.JFrame {
-    ArrayList<Conductor> listaConductores = new ArrayList<>();
+     Stack<Conductor> pilaConductores = new Stack<>();
     Conductor ingresaConductor;
     ConectarBD con = new ConectarBD();
     public RegistroConductor() {
@@ -200,8 +201,16 @@ public class RegistroConductor extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "No puedes Dejar espacios Vacios");
         } else {
             ingresaConductor = new Conductor(WIDTH, nom, noLic, cel, correo);
-            listaConductores.add(ingresaConductor);
-            JOptionPane.showMessageDialog(null, "Se Ha ingresado Correctamente El Conductor");
+           pilaConductores.push(ingresaConductor);
+            JOptionPane.showMessageDialog(null, "Se ha ingresado correctamente el conductor");
+
+            // Mostrar los datos del conductor más reciente (último en ingresar)
+            Conductor conductorReciente = pilaConductores.peek();
+            JOptionPane.showMessageDialog(null, "Datos del Conductor\n"
+                    + "\nNombre: " + conductorReciente.getNombre()
+                    + "\nNo Licencia: " + conductorReciente.getNumLicencia()
+                    + "\nCelular: " + conductorReciente.getCelular()
+                    + "\nCorreo: " + conductorReciente.getCorreo());
             
             try {
                 con.conectarBDOracle();

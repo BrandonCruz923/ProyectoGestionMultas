@@ -8,6 +8,7 @@ import conexion.ConectarBD;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Stack;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -15,6 +16,8 @@ import javax.swing.table.DefaultTableModel;
  * @author capri
  */
 public class ModificarVehiuculo extends javax.swing.JFrame {
+    Stack<Vehiculo> pilaVehiculo = new Stack<>();
+    Vehiculo ingresaVehiculo;
     ConectarBD con = new ConectarBD();
     int fila;
 
@@ -142,6 +145,9 @@ public class ModificarVehiuculo extends javax.swing.JFrame {
 
         lblImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/una patrulla modificado con un tamaño de pixeles de 100 por 100 (1).png"))); // NOI18N
 
+        btnVolver.setBackground(new java.awt.Color(102, 255, 102));
+        btnVolver.setForeground(new java.awt.Color(0, 0, 0));
+        btnVolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
         btnVolver.setText("Volver");
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -149,6 +155,8 @@ public class ModificarVehiuculo extends javax.swing.JFrame {
             }
         });
 
+        btnModificarRegistro.setBackground(new java.awt.Color(102, 255, 102));
+        btnModificarRegistro.setForeground(new java.awt.Color(0, 0, 0));
         btnModificarRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
         btnModificarRegistro.setText("Modificar");
         btnModificarRegistro.addActionListener(new java.awt.event.ActionListener() {
@@ -157,6 +165,8 @@ public class ModificarVehiuculo extends javax.swing.JFrame {
             }
         });
 
+        btnEliminarRegistro.setBackground(new java.awt.Color(102, 255, 102));
+        btnEliminarRegistro.setForeground(new java.awt.Color(0, 0, 0));
         btnEliminarRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
         btnEliminarRegistro.setText("Eliminar");
         btnEliminarRegistro.addActionListener(new java.awt.event.ActionListener() {
@@ -219,7 +229,7 @@ public class ModificarVehiuculo extends javax.swing.JFrame {
                         .addComponent(paneDatosVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(22, 22, 22))
@@ -228,7 +238,7 @@ public class ModificarVehiuculo extends javax.swing.JFrame {
                                 .addComponent(btnModificarRegistro)
                                 .addGap(27, 27, 27)
                                 .addComponent(btnEliminarRegistro)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(28, 28, 28)
                                 .addComponent(btnVolver)))
                         .addGap(33, 33, 33)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)

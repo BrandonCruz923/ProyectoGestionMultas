@@ -191,6 +191,14 @@ public class RegistarUsuario extends javax.swing.JFrame {
         ingresaUsuario = new Usuario(WIDTH, nombre, tipoUsuario, userName, password);
         listaUsuarios.add(ingresaUsuario);
         JOptionPane.showMessageDialog(null, "Ingreso Correctamente El Usuario\n");
+                for (Usuario user : listaUsuarios) {
+                    JOptionPane.showMessageDialog(null, "Datos Del Nuevo Usuario"
+                                                                            + "\nNombre: "+user.getNombre()
+                                                                            +"\nUserName: "+user.getUsername()
+                                                                            +"\nPassword: "+user.getPassword()
+                                                                            +"\nTIpo Usuario: "+user.getTipoUsuario());
+                    
+                }
          
      try {
             con.conectarBDOracle();

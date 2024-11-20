@@ -4,13 +4,14 @@ import conexion.ConectarBD;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import java.sql.SQLException;
+import java.util.Stack;
 /**
  *
  * @author capri
  */
 public class ModificarConductor extends javax.swing.JFrame {
-     ArrayList<Conductor> listaConductores = new ArrayList<>();
-    Conductor ingresaConductor;
+    Stack<Conductor> pilaConductores = new Stack<>();
+    Conductor eliminarConductor;
     ConectarBD con = new ConectarBD();
    
     public ModificarConductor() {
@@ -66,6 +67,9 @@ public class ModificarConductor extends javax.swing.JFrame {
         lblCorreo.setForeground(new java.awt.Color(255, 255, 255));
         lblCorreo.setText("Correo");
 
+        btnVolver.setBackground(new java.awt.Color(102, 255, 102));
+        btnVolver.setForeground(new java.awt.Color(0, 0, 0));
+        btnVolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
         btnVolver.setText("Volver ");
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -77,7 +81,7 @@ public class ModificarConductor extends javax.swing.JFrame {
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblTitulo.setForeground(new java.awt.Color(255, 255, 255));
-        lblTitulo.setText("Editar O Eliminar Conductores");
+        lblTitulo.setText("Editar o Eliminar Conductores");
 
         txtNumeroLicencia.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
@@ -87,6 +91,8 @@ public class ModificarConductor extends javax.swing.JFrame {
         lblNombre.setForeground(new java.awt.Color(255, 255, 255));
         lblNombre.setText("Ingrese Nombre");
 
+        btnBuscar.setBackground(new java.awt.Color(102, 255, 102));
+        btnBuscar.setForeground(new java.awt.Color(0, 0, 0));
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -95,6 +101,8 @@ public class ModificarConductor extends javax.swing.JFrame {
             }
         });
 
+        btnEditar.setBackground(new java.awt.Color(102, 255, 102));
+        btnEditar.setForeground(new java.awt.Color(0, 0, 0));
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
         btnEditar.setText("Editar");
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
@@ -109,6 +117,8 @@ public class ModificarConductor extends javax.swing.JFrame {
         lblIdConductor.setForeground(new java.awt.Color(255, 255, 255));
         lblIdConductor.setText("Id Conductor");
 
+        btnEliminar.setBackground(new java.awt.Color(102, 255, 102));
+        btnEliminar.setForeground(new java.awt.Color(0, 0, 0));
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/github.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -291,6 +301,8 @@ public class ModificarConductor extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Primero Debes Buscar Al Usuario Para Eliminarlo");
         } else {
             int idConductor = Integer.parseInt(idTexto);
+           
+            
             try {
                 con.conectarBDOracle();
                 confirmarBaja = con.stmt.executeUpdate("DELETE FROM conductor WHERE  id_conductor = ' "+idConductor+" ' ");

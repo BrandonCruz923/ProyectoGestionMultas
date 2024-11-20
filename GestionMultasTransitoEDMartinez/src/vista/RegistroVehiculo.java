@@ -5,6 +5,7 @@ import poo.Vehiculo;
 import conexion.ConectarBD;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Stack;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -13,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
  * @author capri
  */
 public class RegistroVehiculo extends javax.swing.JFrame {
-    ArrayList<Vehiculo> listaVehiculo = new ArrayList<>();
+    Stack<Vehiculo> pilaVehiculo = new Stack<>();
     Vehiculo ingresaVehiculo;
     ConectarBD con = new ConectarBD();
     int fila;
@@ -259,8 +260,17 @@ public class RegistroVehiculo extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "No se Puede Dejar Las Casillas Vacias");
           } else {
             ingresaVehiculo = new Vehiculo(WIDTH,placa , marca, modelo, anio, id_Conductor);
-            listaVehiculo.add(ingresaVehiculo);
+            pilaVehiculo.push(ingresaVehiculo);
             JOptionPane.showMessageDialog(null, "Se Ha Agregado Correctamente El Vehiculo");
+            // Mostrar los datos del vheiculo más reciente (último en ingresar)
+            Vehiculo vehiculoReciente = pilaVehiculo.peek();
+            JOptionPane.showMessageDialog(null, "Datos Del Vehiculo\n"
+                                                                   + "\nPlaca: "+vehiculoReciente.getPlaca()
+                                                                   +"\nMacra: "+vehiculoReciente.getMarca()
+                                                                   +"\nModelo: "+vehiculoReciente.getModelo()
+                                                                   +"\nAño: "+vehiculoReciente.getAnio()
+                                                                   +"\nID Dueño: "+vehiculoReciente.getIdConductor());
+            
             try {
                con.conectarBDOracle();
                String altaVehiculo = "INSERT INTO VEHICULO (ID_Vehiculo, Placa, Marca, Modelo, Anio, ID_Conductor) " +
